@@ -16,7 +16,21 @@ import {
 import { useParallax } from '../hooks/useParallax';
 import { Section } from './Section';
 import { ParallaxImage } from './ParallaxImage';
-import { fadeIn, slideUp } from '../utils/animations';
+import {
+  fadeIn,
+  slideUp,
+  scaleUp,
+  rotate,
+  slideInRight,
+  flip,
+  bounce,
+  staggeredFade,
+  slideDown,
+  zoomIn,
+  rotateAndScale,
+  slideInLeft,
+  flipX,
+} from '../utils/animations';
 
 export default function LandingPage() {
   const [ref, parallaxEffect] = useParallax(300); // Use the hook to get ref and parallaxEffect
@@ -63,7 +77,7 @@ export default function LandingPage() {
 
       {/* About Us Section */}
       <Section className="py-20 bg-red-900">
-        <motion.div className="container mx-auto px-4" style={{ y }}>
+        <motion.div className="container mx-auto px-4" style={{ y }} variants={staggeredFade}>
           <h2 className="text-5xl font-bold mb-12 text-center text-white">About Us</h2>
           <p className="text-xl text-gray-300 max-w-4xl mx-auto text-center leading-relaxed">
             XMC Construction is a premier construction company based in Anahawan, Southern Leyte. With a legacy of
@@ -83,21 +97,25 @@ export default function LandingPage() {
               icon={<HomeIcon className="w-16 h-16 text-red-500" />}
               title="Residential Construction"
               description="Crafting homes that reflect your lifestyle and dreams."
+              animation={fadeIn}
             />
             <ServiceCard
               icon={<BuildingOffice2Icon className="w-16 h-16 text-red-500" />}
               title="Commercial Buildings"
               description="Creating spaces that drive business success and growth."
+              animation={fadeIn}
             />
             <ServiceCard
               icon={<TruckIcon className="w-16 h-16 text-red-500" />}
               title="Infrastructure Development"
               description="Building the foundations for thriving communities."
+              animation={fadeIn}
             />
             <ServiceCard
               icon={<WrenchScrewdriverIcon className="w-16 h-16 text-red-500" />}
               title="Renovation & Remodeling"
               description="Breathing new life into existing structures."
+              animation={fadeIn}
             />
           </div>
         </div>
@@ -112,16 +130,19 @@ export default function LandingPage() {
               image="/images/project1.jpg"
               title="Modern Office Complex"
               description="A state-of-the-art office building in the heart of Anahawan."
+              animation={fadeIn}
             />
             <ProjectCard
               image="/images/project2.jpg"
               title="Luxury Residential Community"
               description="High-end homes with breathtaking views of Southern Leyte."
+              animation={fadeIn}
             />
             <ProjectCard
               image="/images/project3.jpg"
               title="Shopping Center"
               description="A modern shopping destination for the local community."
+              animation={fadeIn}
             />
           </div>
         </div>
@@ -173,7 +194,7 @@ export default function LandingPage() {
   );
 }
 
-function ServiceCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
+function ServiceCard({ icon, title, description, animation }: { icon: React.ReactNode; title: string; description: string; animation: Variants }) {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -184,7 +205,7 @@ function ServiceCard({ icon, title, description }: { icon: React.ReactNode; titl
       ref={ref}
       initial="hidden"
       animate={inView ? 'visible' : 'hidden'}
-      variants={fadeIn}
+      variants={animation}
       className="bg-black p-8 rounded-xl shadow-lg text-center transform hover:scale-105 transition duration-300"
     >
       <div className="text-red-500 mb-6">{icon}</div>
@@ -194,7 +215,7 @@ function ServiceCard({ icon, title, description }: { icon: React.ReactNode; titl
   );
 }
 
-function ProjectCard({ image, title, description }: { image: string; title: string; description: string }) {
+function ProjectCard({ image, title, description, animation }: { image: string; title: string; description: string; animation: Variants }) {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -205,14 +226,14 @@ function ProjectCard({ image, title, description }: { image: string; title: stri
       ref={ref}
       initial="hidden"
       animate={inView ? 'visible' : 'hidden'}
-      variants={fadeIn}
+      variants={animation}
       className="bg-black rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition duration-300"
     >
-      <div className="relative h-64">
-        <Image src={image} alt={title} layout="fill" objectFit="cover" />
+      <div className="relative h-60">
+        <Image src={image} alt={title} layout="fill" objectFit="cover" quality={100} />
       </div>
       <div className="p-6">
-        <h3 className="text-xl font-semibold mb-4 text-white">{title}</h3>
+        <h3 className="text-2xl font-semibold mb-4 text-white">{title}</h3>
         <p className="text-gray-300">{description}</p>
       </div>
     </motion.div>
@@ -223,7 +244,7 @@ function ContactItem({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
     <li className="flex items-center space-x-4">
       <div className="text-red-500">{icon}</div>
-      <p>{text}</p>
+      <span>{text}</span>
     </li>
   );
 }
