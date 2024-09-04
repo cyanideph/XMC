@@ -31,7 +31,7 @@ export default function LandingPage() {
         <div className="absolute inset-0">
           <div className="relative w-full h-full">
             <Image
-              src="/images/img.jpg"
+              src="/images/img.png"
               alt="Construction site"
               fill
               style={{ objectFit: 'cover' }}
