@@ -1,3 +1,5 @@
+'use client';
+
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -141,31 +143,21 @@ export default function LandingPage() {
                 />
               </ul>
             </div>
-            <form 
-              action="https://formspree.io/f/xpwandlw" 
-              method="POST" 
-              className="space-y-6"
-            >
+            <form className="space-y-6">
               <input
                 type="text"
-                name="name"
                 placeholder="Your Name"
                 className="w-full px-6 py-4 rounded-lg bg-gray-800 text-white text-lg"
-                required
               />
               <input
                 type="email"
-                name="email"
                 placeholder="Your Email"
                 className="w-full px-6 py-4 rounded-lg bg-gray-800 text-white text-lg"
-                required
               />
               <textarea
-                name="message"
                 placeholder="Your Message"
                 rows={4}
                 className="w-full px-6 py-4 rounded-lg bg-gray-800 text-white text-lg"
-                required
               ></textarea>
               <button
                 type="submit"
@@ -220,7 +212,7 @@ function ProjectCard({ image, title, description }: { image: string; title: stri
         <Image src={image} alt={title} layout="fill" objectFit="cover" />
       </div>
       <div className="p-6">
-        <h3 className="text-2xl font-semibold mb-4 text-white">{title}</h3>
+        <h3 className="text-xl font-semibold mb-4 text-white">{title}</h3>
         <p className="text-gray-300">{description}</p>
       </div>
     </motion.div>
@@ -231,7 +223,7 @@ function ContactItem({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
     <li className="flex items-center space-x-4">
       <div className="text-red-500">{icon}</div>
-      <span>{text}</span>
+      <p>{text}</p>
     </li>
   );
 }
