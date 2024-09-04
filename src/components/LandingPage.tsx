@@ -1,8 +1,9 @@
-'use client'
+'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { useRef } from 'react'
-import { useInView } from 'react-intersection-observer'
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
+import { useInView } from 'react-intersection-observer';
+import Image from 'next/image';
 import {
   BuildingOffice2Icon,
   HomeIcon,
@@ -11,33 +12,44 @@ import {
   PhoneIcon,
   EnvelopeIcon,
   MapPinIcon,
-} from '@heroicons/react/24/outline'
-import { useParallax } from '../hooks/useParallax'
-import { Section } from './Section'
-import { ParallaxImage } from './ParallaxImage'
-import { fadeIn, slideUp } from '../utils/animations'
+} from '@heroicons/react/24/outline';
+import { useParallax } from '../hooks/useParallax';
+import { Section } from './Section';
+import { ParallaxImage } from './ParallaxImage';
+import { fadeIn, slideUp } from '../utils/animations';
 
 export default function LandingPage() {
-  const ref = useRef(null)
-  const { scrollYProgress } = useScroll({ target: ref })
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
+  const [ref, parallaxEffect] = useParallax(300); // Use the hook to get ref and parallaxEffect
+
+  const { scrollYProgress } = useScroll({ target: ref });
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
 
   return (
     <div ref={ref} className="bg-gray-100">
       {/* Hero Section */}
       <Section className="h-screen flex items-center justify-center relative overflow-hidden">
-        <ParallaxImage src="/placeholder.svg?height=1080&width=1920" alt="Construction site" />
+        <div className="absolute inset-0">
+          <Image
+            src="/images/hero.jpg"
+            alt="Construction site"
+            layout="fill"
+            objectFit="cover"
+            quality={100}
+          />
+          <div className="absolute inset-0 bg-black bg-opacity-50" />
+        </div>
         <motion.div
           className="relative z-10 text-center text-white"
           initial="hidden"
           animate="visible"
           variants={fadeIn}
+          style={{ transform: `translateY(${parallaxEffect.get()}px)` }} // Apply the parallax effect
         >
           <motion.h1 className="text-6xl font-bold mb-4" variants={slideUp}>
             XMC Construction
           </motion.h1>
           <motion.p className="text-2xl mb-8" variants={slideUp}>
-            Building Dreams in Anahawan, Southern Leyte
+            Building Dreams
           </motion.p>
           <motion.a
             href="#contact"
@@ -97,17 +109,17 @@ export default function LandingPage() {
           <h2 className="text-5xl font-bold mb-16 text-center">Our Projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             <ProjectCard
-              image="/placeholder.svg?height=600&width=800"
+              image="/images/project1.jpg"
               title="Modern Office Complex"
               description="A state-of-the-art office building in the heart of Anahawan."
             />
             <ProjectCard
-              image="/placeholder.svg?height=600&width=800"
+              image="/images/project2.jpg"
               title="Luxury Residential Community"
               description="High-end homes with breathtaking views of Southern Leyte."
             />
             <ProjectCard
-              image="/placeholder.svg?height=600&width=800"
+              image="/images/project3.jpg"
               title="Shopping Center"
               description="A modern shopping destination for the local community."
             />
@@ -127,7 +139,7 @@ export default function LandingPage() {
                 <ContactItem icon={<EnvelopeIcon className="w-8 h-8" />} text="info@xmcconstruction.com" />
                 <ContactItem
                   icon={<MapPinIcon className="w-8 h-8" />}
-                  text="123 Main Street, Anahawan, Southern Leyte, Philippines"
+                  text="Anahawan, Southern Leyte, Philippines"
                 />
               </ul>
             </div>
@@ -158,14 +170,14 @@ export default function LandingPage() {
         </div>
       </Section>
     </div>
-  )
+  );
 }
 
 function ServiceCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
-  })
+  });
 
   return (
     <motion.div
@@ -179,14 +191,14 @@ function ServiceCard({ icon, title, description }: { icon: React.ReactNode; titl
       <h3 className="text-2xl font-semibold mb-4">{title}</h3>
       <p className="text-gray-600">{description}</p>
     </motion.div>
-  )
+  );
 }
 
 function ProjectCard({ image, title, description }: { image: string; title: string; description: string }) {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
-  })
+  });
 
   return (
     <motion.div
@@ -196,20 +208,22 @@ function ProjectCard({ image, title, description }: { image: string; title: stri
       variants={fadeIn}
       className="bg-white rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition duration-300"
     >
-      <img src={image} alt={title} className="w-full h-64 object-cover" />
-      <div className="p-8">
-        <h3 className="text-2xl font-semibold mb-4">{title}</h3>
+      <div className="relative h-64">
+        <Image src={image} alt={title} layout="fill" objectFit="cover" />
+      </div>
+      <div className="p-6">
+        <h3 className="text-xl font-semibold mb-4">{title}</h3>
         <p className="text-gray-600">{description}</p>
       </div>
     </motion.div>
-  )
+  );
 }
 
 function ContactItem({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
     <li className="flex items-center">
-      <div className="mr-6 text-yellow-500">{icon}</div>
-      <span className="text-xl">{text}</span>
+      <div className="mr-4 text-yellow-500">{icon}</div>
+      <span className="text-lg">{text}</span>
     </li>
-  )
+  );
 }
