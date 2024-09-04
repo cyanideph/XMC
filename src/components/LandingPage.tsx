@@ -29,14 +29,16 @@ export default function LandingPage() {
       {/* Hero Section */}
       <Section className="h-screen flex items-center justify-center relative overflow-hidden">
         <div className="absolute inset-0">
-          <Image
-            src="/images/hero.png"
-            alt="Construction site"
-            layout="fill"
-            objectFit="cover"
-            quality={100}
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-50" />
+          <div className="relative w-full h-full">
+            <Image
+              src="/images/hero.png"
+              alt="Construction site"
+              fill
+              style={{ objectFit: 'cover' }}
+              quality={100}
+            />
+            <div className="absolute inset-0 bg-black bg-opacity-50" />
+          </div>
         </div>
         <motion.div
           className="relative z-10 text-center text-white"
@@ -208,8 +210,14 @@ function ProjectCard({ image, title, description }: { image: string; title: stri
       variants={fadeIn}
       className="bg-black rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition duration-300"
     >
-      <div className="relative h-64">
-        <Image src={image} alt={title} layout="fill" objectFit="cover" />
+      <div className="relative w-full h-60">
+        <Image
+          src={image}
+          alt={title}
+          fill
+          style={{ objectFit: 'cover' }}
+          quality={100}
+        />
       </div>
       <div className="p-6">
         <h3 className="text-xl font-semibold mb-4 text-white">{title}</h3>
@@ -223,7 +231,7 @@ function ContactItem({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
     <li className="flex items-center space-x-4">
       <div className="text-red-500">{icon}</div>
-      <p>{text}</p>
+      <p className="text-lg">{text}</p>
     </li>
   );
 }
