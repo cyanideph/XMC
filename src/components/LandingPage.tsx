@@ -25,12 +25,12 @@ export default function LandingPage() {
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
 
   return (
-    <div ref={ref} className="bg-gray-100">
+    <div ref={ref} className="bg-black">
       {/* Hero Section */}
       <Section className="h-screen flex items-center justify-center relative overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/hero.jpg"
+            src="/images/hero.png"
             alt="Construction site"
             layout="fill"
             objectFit="cover"
@@ -53,7 +53,7 @@ export default function LandingPage() {
           </motion.p>
           <motion.a
             href="#contact"
-            className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-4 px-8 rounded-full text-xl transition duration-300 inline-block"
+            className="bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-8 rounded-full text-xl transition duration-300 inline-block"
             variants={slideUp}
           >
             Get a Quote
@@ -62,7 +62,7 @@ export default function LandingPage() {
       </Section>
 
       {/* About Us Section */}
-      <Section className="py-20 bg-white">
+      <Section className="py-20 bg-red-900">
         <motion.div className="container mx-auto px-4" style={{ y }}>
           <h2 className="text-5xl font-bold mb-12 text-center">About Us</h2>
           <p className="text-xl text-gray-700 max-w-4xl mx-auto text-center leading-relaxed">
