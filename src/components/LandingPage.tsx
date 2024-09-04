@@ -12,10 +12,10 @@ import {
   EnvelopeIcon,
   MapPinIcon,
 } from '@heroicons/react/24/outline'
-import { useParallax } from './useParallax'
+import { useParallax } from '../hooks/useParallax'
 import { Section } from './Section'
 import { ParallaxImage } from './ParallaxImage'
-import { fadeIn, slideUp } from './animations'
+import { fadeIn, slideUp } from '../utils/animations'
 
 export default function LandingPage() {
   const ref = useRef(null)
