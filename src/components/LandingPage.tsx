@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, Variants } from 'framer-motion'; // Import Variants here
 import { useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
@@ -227,15 +227,11 @@ function ProjectCard({ image, title, description, animation }: { image: string; 
       initial="hidden"
       animate={inView ? 'visible' : 'hidden'}
       variants={animation}
-      className="bg-black rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition duration-300"
+      className="bg-gray-800 p-6 rounded-lg shadow-lg overflow-hidden"
     >
-      <div className="relative h-60">
-        <Image src={image} alt={title} layout="fill" objectFit="cover" quality={100} />
-      </div>
-      <div className="p-6">
-        <h3 className="text-2xl font-semibold mb-4 text-white">{title}</h3>
-        <p className="text-gray-300">{description}</p>
-      </div>
+      <Image src={image} alt={title} width={400} height={300} objectFit="cover" className="w-full h-48 object-cover mb-4" />
+      <h3 className="text-xl font-semibold mb-2 text-white">{title}</h3>
+      <p className="text-gray-300">{description}</p>
     </motion.div>
   );
 }
@@ -244,7 +240,7 @@ function ContactItem({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
     <li className="flex items-center space-x-4">
       <div className="text-red-500">{icon}</div>
-      <span>{text}</span>
+      <span className="text-lg">{text}</span>
     </li>
   );
 }
