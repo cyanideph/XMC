@@ -64,8 +64,8 @@ export default function LandingPage() {
       {/* About Us Section */}
       <Section className="py-20 bg-red-900">
         <motion.div className="container mx-auto px-4" style={{ y }}>
-          <h2 className="text-5xl font-bold mb-12 text-center">About Us</h2>
-          <p className="text-xl text-gray-700 max-w-4xl mx-auto text-center leading-relaxed">
+          <h2 className="text-5xl font-bold mb-12 text-center text-white">About Us</h2>
+          <p className="text-xl text-gray-300 max-w-4xl mx-auto text-center leading-relaxed">
             XMC Construction is a premier construction company based in Anahawan, Southern Leyte. With a legacy of
             excellence and a passion for innovation, we transform architectural visions into stunning realities. Our
             team of expert professionals is dedicated to delivering projects that exceed expectations, on time and
@@ -75,27 +75,27 @@ export default function LandingPage() {
       </Section>
 
       {/* Services Section */}
-      <Section className="py-20 bg-gray-100">
+      <Section className="py-20 bg-black">
         <div className="container mx-auto px-4">
-          <h2 className="text-5xl font-bold mb-16 text-center">Our Services</h2>
+          <h2 className="text-5xl font-bold mb-16 text-center text-white">Our Services</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
             <ServiceCard
-              icon={<HomeIcon className="w-16 h-16" />}
+              icon={<HomeIcon className="w-16 h-16 text-red-500" />}
               title="Residential Construction"
               description="Crafting homes that reflect your lifestyle and dreams."
             />
             <ServiceCard
-              icon={<BuildingOffice2Icon className="w-16 h-16" />}
+              icon={<BuildingOffice2Icon className="w-16 h-16 text-red-500" />}
               title="Commercial Buildings"
               description="Creating spaces that drive business success and growth."
             />
             <ServiceCard
-              icon={<TruckIcon className="w-16 h-16" />}
+              icon={<TruckIcon className="w-16 h-16 text-red-500" />}
               title="Infrastructure Development"
               description="Building the foundations for thriving communities."
             />
             <ServiceCard
-              icon={<WrenchScrewdriverIcon className="w-16 h-16" />}
+              icon={<WrenchScrewdriverIcon className="w-16 h-16 text-red-500" />}
               title="Renovation & Remodeling"
               description="Breathing new life into existing structures."
             />
@@ -104,9 +104,9 @@ export default function LandingPage() {
       </Section>
 
       {/* Projects Showcase */}
-      <Section className="py-20 bg-white">
+      <Section className="py-20 bg-black">
         <div className="container mx-auto px-4">
-          <h2 className="text-5xl font-bold mb-16 text-center">Our Projects</h2>
+          <h2 className="text-5xl font-bold mb-16 text-center text-white">Our Projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             <ProjectCard
               image="/images/project1.jpg"
@@ -128,17 +128,17 @@ export default function LandingPage() {
       </Section>
 
       {/* Contact Section */}
-      <Section id="contact" className="py-20 bg-gray-900 text-white">
+      <Section id="contact" className="py-20 bg-red-900 text-white">
         <div className="container mx-auto px-4">
           <h2 className="text-5xl font-bold mb-16 text-center">Contact Us</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
             <div>
               <h3 className="text-3xl font-semibold mb-8">Get in Touch</h3>
               <ul className="space-y-6">
-                <ContactItem icon={<PhoneIcon className="w-8 h-8" />} text="+63 123 456 7890" />
-                <ContactItem icon={<EnvelopeIcon className="w-8 h-8" />} text="info@xmcconstruction.com" />
+                <ContactItem icon={<PhoneIcon className="w-8 h-8 text-red-500" />} text="+63 123 456 7890" />
+                <ContactItem icon={<EnvelopeIcon className="w-8 h-8 text-red-500" />} text="info@xmcconstruction.com" />
                 <ContactItem
-                  icon={<MapPinIcon className="w-8 h-8" />}
+                  icon={<MapPinIcon className="w-8 h-8 text-red-500" />}
                   text="Anahawan, Southern Leyte, Philippines"
                 />
               </ul>
@@ -161,7 +161,7 @@ export default function LandingPage() {
               ></textarea>
               <button
                 type="submit"
-                className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-4 px-8 rounded-full text-xl transition duration-300"
+                className="bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-8 rounded-full text-xl transition duration-300"
               >
                 Send Message
               </button>
@@ -185,11 +185,11 @@ function ServiceCard({ icon, title, description }: { icon: React.ReactNode; titl
       initial="hidden"
       animate={inView ? 'visible' : 'hidden'}
       variants={fadeIn}
-      className="bg-white p-8 rounded-xl shadow-lg text-center transform hover:scale-105 transition duration-300"
+      className="bg-black p-8 rounded-xl shadow-lg text-center transform hover:scale-105 transition duration-300"
     >
-      <div className="text-yellow-500 mb-6">{icon}</div>
-      <h3 className="text-2xl font-semibold mb-4">{title}</h3>
-      <p className="text-gray-600">{description}</p>
+      <div className="text-red-500 mb-6">{icon}</div>
+      <h3 className="text-2xl font-semibold mb-4 text-white">{title}</h3>
+      <p className="text-gray-300">{description}</p>
     </motion.div>
   );
 }
@@ -206,14 +206,14 @@ function ProjectCard({ image, title, description }: { image: string; title: stri
       initial="hidden"
       animate={inView ? 'visible' : 'hidden'}
       variants={fadeIn}
-      className="bg-white rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition duration-300"
+      className="bg-black rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition duration-300"
     >
       <div className="relative h-64">
         <Image src={image} alt={title} layout="fill" objectFit="cover" />
       </div>
       <div className="p-6">
-        <h3 className="text-xl font-semibold mb-4">{title}</h3>
-        <p className="text-gray-600">{description}</p>
+        <h3 className="text-xl font-semibold mb-4 text-white">{title}</h3>
+        <p className="text-gray-300">{description}</p>
       </div>
     </motion.div>
   );
@@ -221,9 +221,9 @@ function ProjectCard({ image, title, description }: { image: string; title: stri
 
 function ContactItem({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
-    <li className="flex items-center">
-      <div className="mr-4 text-yellow-500">{icon}</div>
-      <span className="text-lg">{text}</span>
+    <li className="flex items-center space-x-4">
+      <div className="text-red-500">{icon}</div>
+      <p>{text}</p>
     </li>
   );
 }
