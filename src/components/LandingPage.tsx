@@ -1,5 +1,3 @@
-'use client';
-
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -31,284 +29,153 @@ import {
   slideInLeft, 
   flipX 
 } from '../utils/animations';
+import { ServiceCard } from './ServiceCard';
+import { ProjectCard } from './ProjectCard';
+import { ContactItem } from './ContactItem';
 
 export default function LandingPage() {
-  const [ref, parallaxEffect] = useParallax(300);
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { scrollYProgress } = useScroll();
   const prefersReducedMotion = useReducedMotion();
-  const [isLoaded, setIsLoaded] = useState(false);
+  const heroRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({ target: ref });
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
+  // Parallax effect for hero section
+  const { ref: parallaxRef, y: parallaxY } = useParallax(0.3);
+  const yTransform = useTransform(scrollYProgress, [0, 1], ['0%', '-50%']);
+
+  // State to store window width
+  const [windowWidth, setWindowWidth] = useState<number>(0);
 
   useEffect(() => {
-    setIsLoaded(true);
+    setWindowWidth(window.innerWidth);
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const animationProps = prefersReducedMotion ? { initial: "visible" } : { initial: "hidden", animate: "visible" };
-
   return (
-    <div ref={ref} className="bg-black">
+    <div>
       {/* Hero Section */}
-      <Section className="h-screen flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0">
-          <OscillateBackground />
-          <div className="absolute inset-0 bg-black bg-opacity-50" />
-        </div>
-        <motion.div
-          className="relative z-10 text-center text-white"
-          variants={staggeredFade}
-          {...animationProps}
+      <section ref={heroRef} className="relative min-h-screen bg-black">
+        <OscillateBackground />
+        <div
+          ref={parallaxRef}
+          style={{
+            transform: `translateY(${prefersReducedMotion ? '0' : parallaxY}px)`,
+          }}
+          className="relative z-10 flex flex-col items-center justify-center h-screen"
         >
-          <motion.h1 className="text-6xl font-bold mb-4" variants={slideDown}>
-            XMC Construction
-          </motion.h1>
-          <motion.p className="text-2xl mb-8" variants={slideUp}>
-            Building Dreams
-          </motion.p>
-          <motion.a
-            href="#contact"
-            className="bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-8 rounded-full text-xl transition duration-300 inline-block"
-            variants={bounce}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Get a Quote
-          </motion.a>
-        </motion.div>
-      </Section>
-
-      {/* About Us Section */}
-      <Section className="py-20 bg-red-900">
-        <motion.div className="container mx-auto px-4" style={prefersReducedMotion ? {} : { y }}>
-          <motion.h2 
-            className="text-5xl font-bold mb-12 text-center text-white"
-            variants={flipX}
-            {...animationProps}
-            viewport={{ once: true }}
-          >
-            About Us
-          </motion.h2>
-          <motion.p 
-            className="text-xl text-gray-300 max-w-4xl mx-auto text-center leading-relaxed"
+          <motion.h1
+            className="text-5xl md:text-7xl font-extrabold text-white text-center"
+            initial="hidden"
+            animate="visible"
             variants={fadeIn}
-            {...animationProps}
-            viewport={{ once: true }}
           >
-            XMC Construction is a premier construction company based in Anahawan, Southern Leyte. With a legacy of
-            excellence and a passion for innovation, we transform architectural visions into stunning realities. Our
-            team of expert professionals is dedicated to delivering projects that exceed expectations, on time and
-            within budget.
+            Welcome to XMC Construction
+          </motion.h1>
+          <motion.p
+            className="mt-6 text-lg md:text-xl text-gray-300 text-center max-w-2xl"
+            initial="hidden"
+            animate="visible"
+            variants={slideUp}
+          >
+            Building the future, one project at a time. Your trusted partner in construction.
           </motion.p>
-        </motion.div>
-      </Section>
+        </div>
+      </section>
 
       {/* Services Section */}
-      <Section className="py-20 bg-black">
-        <div className="container mx-auto px-4">
-          <motion.h2 
-            className="text-5xl font-bold mb-16 text-center text-white"
-            variants={rotateAndScale}
-            {...animationProps}
-            viewport={{ once: true }}
+      <Section id="services" className="bg-gray-900 py-20">
+        <motion.div className="container mx-auto">
+          <motion.h2
+            className="text-4xl font-bold text-center text-white mb-12"
+            initial="hidden"
+            animate={inView ? 'visible' : 'hidden'}
+            variants={fadeIn}
+            ref={ref}
           >
             Our Services
           </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+
+          <div className="grid gap-10 md:grid-cols-3">
             <ServiceCard
-              icon={<HomeIcon className="w-16 h-16 text-red-500" />}
+              icon={<BuildingOffice2Icon className="w-16 h-16" />}
               title="Residential Construction"
-              description="Crafting homes that reflect your lifestyle and dreams."
-              variant={slideInLeft}
+              description="We offer high-quality residential construction services, from planning to execution."
+              variant={scaleUp}
             />
             <ServiceCard
-              icon={<BuildingOffice2Icon className="w-16 h-16 text-red-500" />}
-              title="Commercial Buildings"
-              description="Creating spaces that drive business success and growth."
-              variant={slideUp}
+              icon={<TruckIcon className="w-16 h-16" />}
+              title="Commercial Construction"
+              description="Experienced in delivering large-scale commercial projects with precision and quality."
+              variant={bounce}
             />
             <ServiceCard
-              icon={<TruckIcon className="w-16 h-16 text-red-500" />}
-              title="Infrastructure Development"
-              description="Building the foundations for thriving communities."
-              variant={slideInRight}
-            />
-            <ServiceCard
-              icon={<WrenchScrewdriverIcon className="w-16 h-16 text-red-500" />}
-              title="Renovation & Remodeling"
-              description="Breathing new life into existing structures."
-              variant={zoomIn}
+              icon={<WrenchScrewdriverIcon className="w-16 h-16" />}
+              title="Renovation & Repair"
+              description="Our team handles renovation projects with great attention to detail, ensuring satisfaction."
+              variant={rotateAndScale}
             />
           </div>
-        </div>
+        </motion.div>
       </Section>
 
-      {/* Projects Showcase */}
-      <Section className="py-20 bg-black">
-        <div className="container mx-auto px-4">
-          <motion.h2 
-            className="text-5xl font-bold mb-16 text-center text-white"
-            variants={flip}
-            {...animationProps}
-            viewport={{ once: true }}
+      {/* Projects Section */}
+      <Section id="projects" className="bg-black py-20">
+        <motion.div className="container mx-auto">
+          <motion.h2
+            className="text-4xl font-bold text-center text-white mb-12"
+            initial="hidden"
+            animate={inView ? 'visible' : 'hidden'}
+            variants={fadeIn}
+            ref={ref}
           >
             Our Projects
           </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+
+          <div className="grid gap-10 md:grid-cols-3">
             <ProjectCard
               image="/images/project1.jpg"
-              title="Modern Office Complex"
-              description="A state-of-the-art office building in the heart of Anahawan."
-              variant={scaleUp}
+              title="Luxury Villa"
+              description="A stunning luxury villa built to perfection."
+              variant={flip}
             />
             <ProjectCard
               image="/images/project2.jpg"
-              title="Luxury Residential Community"
-              description="High-end homes with breathtaking views of Southern Leyte."
-              variant={rotate}
+              title="Office Building"
+              description="A modern office building designed for efficiency."
+              variant={slideInRight}
             />
             <ProjectCard
               image="/images/project3.jpg"
-              title="Shopping Center"
-              description="A modern shopping destination for the local community."
-              variant={slideInRight}
+              title="Industrial Warehouse"
+              description="A large-scale warehouse built to support industrial needs."
+              variant={zoomIn}
             />
           </div>
-        </div>
+        </motion.div>
       </Section>
 
       {/* Contact Section */}
-      <Section id="contact" className="py-20 bg-red-900 text-white">
-        <div className="container mx-auto px-4">
-          <motion.h2 
-            className="text-5xl font-bold mb-16 text-center"
-            variants={bounce}
-            {...animationProps}
-            viewport={{ once: true }}
+      <Section id="contact" className="bg-gray-900 py-20">
+        <motion.div className="container mx-auto">
+          <motion.h2
+            className="text-4xl font-bold text-center text-white mb-12"
+            initial="hidden"
+            animate={inView ? 'visible' : 'hidden'}
+            variants={fadeIn}
+            ref={ref}
           >
             Contact Us
           </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-            <motion.div
-              variants={staggeredFade}
-              {...animationProps}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-3xl font-semibold mb-8">Get in Touch</h3>
-              <ul className="space-y-6">
-                <ContactItem 
-                  icon={<PhoneIcon className="w-8 h-8 text-red-500" />} 
-                  text="+63 123 456 7890" 
-                />
-                <ContactItem 
-                  icon={<EnvelopeIcon className="w-8 h-8 text-red-500" />} 
-                  text="info@xmcconstruction.com" 
-                />
-                <ContactItem
-                  icon={<MapPinIcon className="w-8 h-8 text-red-500" />}
-                  text="Anahawan, Southern Leyte, Philippines"
-                />
-              </ul>
-            </motion.div>
-            <motion.form 
-              className="space-y-6"
-              variants={fadeIn}
-              {...animationProps}
-              viewport={{ once: true }}
-            >
-              <input
-                type="text"
-                placeholder="Your Name"
-                className="w-full px-6 py-4 rounded-lg bg-gray-800 text-white text-lg"
-              />
-              <input
-                type="email"
-                placeholder="Your Email"
-                className="w-full px-6 py-4 rounded-lg bg-gray-800 text-white text-lg"
-              />
-              <textarea
-                placeholder="Your Message"
-                rows={4}
-                className="w-full px-6 py-4 rounded-lg bg-gray-800 text-white text-lg"
-              ></textarea>
-              <motion.button
-                type="submit"
-                className="bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-8 rounded-full text-xl transition duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Send Message
-              </motion.button>
-            </motion.form>
-          </div>
-        </div>
+
+          <ul className="space-y-8">
+            <ContactItem icon={<PhoneIcon className="w-8 h-8" />} text="+1 123 456 7890" />
+            <ContactItem icon={<EnvelopeIcon className="w-8 h-8" />} text="info@xmcconstruction.com" />
+            <ContactItem icon={<MapPinIcon className="w-8 h-8" />} text="1234 Main Street, Anahawan, Southern Leyte" />
+          </ul>
+        </motion.div>
       </Section>
     </div>
-  );
-}
-
-function ServiceCard({ icon, title, description, variant }: { icon: React.ReactNode; title: string; description: string; variant: any }) {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-  const prefersReducedMotion = useReducedMotion();
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={prefersReducedMotion ? "visible" : "hidden"}
-      animate={inView && !prefersReducedMotion ? 'visible' : 'hidden'}
-      variants={variant}
-      className="bg-black p-8 rounded-xl shadow-lg text-center transform hover:scale-105 transition duration-300"
-    >
-      <div className="text-red-500 mb-6">{icon}</div>
-      <h3 className="text-2xl font-semibold mb-4 text-white">{title}</h3>
-      <p className="text-gray-300">{description}</p>
-    </motion.div>
-  );
-}
-
-function ProjectCard({ image, title, description, variant }: { image: string; title: string; description: string; variant: any }) {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-  const prefersReducedMotion = useReducedMotion();
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={prefersReducedMotion ? "visible" : "hidden"}
-      animate={inView && !prefersReducedMotion ? 'visible' : 'hidden'}
-      variants={variant}
-      className="bg-black rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition duration-300"
-    >
-      <div className="relative w-full h-60">
-        <Image
-          src={image}
-          alt={title}
-          fill
-          style={{ objectFit: 'cover' }}
-          quality={100}
-          loading="lazy"
-        />
-      </div>
-      <div className="p-6">
-        <h3 className="text-xl font-semibold mb-4 text-white">{title}</h3>
-        <p className="text-gray-300">{description}</p>
-      </div>
-    </motion.div>
-  );
-}
-
-function ContactItem({ icon, text }: { icon: React.ReactNode; text: string }) {
-  return (
-    <motion.li 
-      className="flex items-center space-x-4"
-      variants={slideInLeft}
-    >
-      <div className="text-red-500">{icon}</div>
-      <p className="text-lg text-white">{text}</p>
-    </motion.li>
   );
 }
