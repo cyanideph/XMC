@@ -1,7 +1,7 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import { useRef, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
 import {
@@ -15,7 +15,6 @@ import {
 } from '@heroicons/react/24/outline';
 import { useParallax } from '../hooks/useParallax';
 import { Section } from './Section';
-import { ParallaxImage } from './ParallaxImage';
 import { OscillateBackground } from './OscillateBackground';
 import { 
   fadeIn, 
@@ -35,9 +34,17 @@ import {
 
 export default function LandingPage() {
   const [ref, parallaxEffect] = useParallax(300);
+  const prefersReducedMotion = useReducedMotion();
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const { scrollYProgress } = useScroll({ target: ref });
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
+
+  const animationProps = prefersReducedMotion ? { initial: "visible" } : { initial: "hidden", animate: "visible" };
 
   return (
     <div ref={ref} className="bg-black">
@@ -49,9 +56,8 @@ export default function LandingPage() {
         </div>
         <motion.div
           className="relative z-10 text-center text-white"
-          initial="hidden"
-          animate="visible"
           variants={staggeredFade}
+          {...animationProps}
         >
           <motion.h1 className="text-6xl font-bold mb-4" variants={slideDown}>
             XMC Construction
@@ -63,6 +69,8 @@ export default function LandingPage() {
             href="#contact"
             className="bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-8 rounded-full text-xl transition duration-300 inline-block"
             variants={bounce}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             Get a Quote
           </motion.a>
@@ -71,12 +79,11 @@ export default function LandingPage() {
 
       {/* About Us Section */}
       <Section className="py-20 bg-red-900">
-        <motion.div className="container mx-auto px-4" style={{ y }}>
+        <motion.div className="container mx-auto px-4" style={prefersReducedMotion ? {} : { y }}>
           <motion.h2 
             className="text-5xl font-bold mb-12 text-center text-white"
             variants={flipX}
-            initial="hidden"
-            whileInView="visible"
+            {...animationProps}
             viewport={{ once: true }}
           >
             About Us
@@ -84,8 +91,7 @@ export default function LandingPage() {
           <motion.p 
             className="text-xl text-gray-300 max-w-4xl mx-auto text-center leading-relaxed"
             variants={fadeIn}
-            initial="hidden"
-            whileInView="visible"
+            {...animationProps}
             viewport={{ once: true }}
           >
             XMC Construction is a premier construction company based in Anahawan, Southern Leyte. With a legacy of
@@ -102,8 +108,7 @@ export default function LandingPage() {
           <motion.h2 
             className="text-5xl font-bold mb-16 text-center text-white"
             variants={rotateAndScale}
-            initial="hidden"
-            whileInView="visible"
+            {...animationProps}
             viewport={{ once: true }}
           >
             Our Services
@@ -143,8 +148,7 @@ export default function LandingPage() {
           <motion.h2 
             className="text-5xl font-bold mb-16 text-center text-white"
             variants={flip}
-            initial="hidden"
-            whileInView="visible"
+            {...animationProps}
             viewport={{ once: true }}
           >
             Our Projects
@@ -178,8 +182,7 @@ export default function LandingPage() {
           <motion.h2 
             className="text-5xl font-bold mb-16 text-center"
             variants={bounce}
-            initial="hidden"
-            whileInView="visible"
+            {...animationProps}
             viewport={{ once: true }}
           >
             Contact Us
@@ -187,8 +190,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
             <motion.div
               variants={staggeredFade}
-              initial="hidden"
-              whileInView="visible"
+              {...animationProps}
               viewport={{ once: true }}
             >
               <h3 className="text-3xl font-semibold mb-8">Get in Touch</h3>
@@ -210,8 +212,7 @@ export default function LandingPage() {
             <motion.form 
               className="space-y-6"
               variants={fadeIn}
-              initial="hidden"
-              whileInView="visible"
+              {...animationProps}
               viewport={{ once: true }}
             >
               <input
@@ -250,12 +251,13 @@ function ServiceCard({ icon, title, description, variant }: { icon: React.ReactN
     triggerOnce: true,
     threshold: 0.1,
   });
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <motion.div
       ref={ref}
-      initial="hidden"
-      animate={inView ? 'visible' : 'hidden'}
+      initial={prefersReducedMotion ? "visible" : "hidden"}
+      animate={inView && !prefersReducedMotion ? 'visible' : 'hidden'}
       variants={variant}
       className="bg-black p-8 rounded-xl shadow-lg text-center transform hover:scale-105 transition duration-300"
     >
@@ -271,12 +273,13 @@ function ProjectCard({ image, title, description, variant }: { image: string; ti
     triggerOnce: true,
     threshold: 0.1,
   });
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <motion.div
       ref={ref}
-      initial="hidden"
-      animate={inView ? 'visible' : 'hidden'}
+      initial={prefersReducedMotion ? "visible" : "hidden"}
+      animate={inView && !prefersReducedMotion ? 'visible' : 'hidden'}
       variants={variant}
       className="bg-black rounded-xl overflow-hidden shadow-lg transform hover:scale-105 transition duration-300"
     >
@@ -287,6 +290,7 @@ function ProjectCard({ image, title, description, variant }: { image: string; ti
           fill
           style={{ objectFit: 'cover' }}
           quality={100}
+          loading="lazy"
         />
       </div>
       <div className="p-6">
