@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-
+import { slideInLeft } from '../utils/animations';
 export function ContactItem({
   icon,
   text,
