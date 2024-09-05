@@ -1,11 +1,11 @@
-"use client";
+"use client"; // Ensures that this component is client-side rendered
+
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
 import {
   BuildingOffice2Icon,
-  HomeIcon,
   TruckIcon,
   WrenchScrewdriverIcon,
   PhoneIcon,
@@ -41,8 +41,8 @@ export default function LandingPage() {
   const heroRef = useRef<HTMLDivElement>(null);
 
   // Parallax effect for hero section
-  const { ref: parallaxRef, y: parallaxY } = useParallax(0.3);
-  const yTransform = useTransform(scrollYProgress, [0, 1], ['0%', '-50%']);
+  const [parallaxRef, parallaxY] = useParallax(300); // Adjust distance as needed
+  const yTransform = useTransform(parallaxY, [0, 300], ['0%', '-50%']); // Adjust range and values as needed
 
   // State to store window width
   const [windowWidth, setWindowWidth] = useState<number>(0);
@@ -62,7 +62,7 @@ export default function LandingPage() {
         <div
           ref={parallaxRef}
           style={{
-            transform: `translateY(${prefersReducedMotion ? '0' : parallaxY}px)`,
+            transform: prefersReducedMotion ? 'translateY(0)' : `translateY(${yTransform})`,
           }}
           className="relative z-10 flex flex-col items-center justify-center h-screen"
         >
