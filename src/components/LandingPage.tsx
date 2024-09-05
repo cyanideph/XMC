@@ -1,3 +1,4 @@
+"use client";
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
