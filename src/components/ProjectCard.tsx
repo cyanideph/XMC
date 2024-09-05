@@ -1,7 +1,21 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
-
+import { 
+  fadeIn, 
+  slideUp, 
+  scaleUp, 
+  rotate, 
+  slideInRight, 
+  flip, 
+  bounce, 
+  staggeredFade, 
+  slideDown, 
+  zoomIn, 
+  rotateAndScale, 
+  slideInLeft, 
+  flipX 
+} from '../utils/animations';
 export function ProjectCard({
   image,
   title,
