@@ -1,4 +1,3 @@
-// src/components/OscillateBackground.tsx
 import React from 'react';
 
 export const OscillateBackground: React.FC = () => (
