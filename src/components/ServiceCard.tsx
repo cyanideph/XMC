@@ -1,6 +1,20 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-
+import { 
+  fadeIn, 
+  slideUp, 
+  scaleUp, 
+  rotate, 
+  slideInRight, 
+  flip, 
+  bounce, 
+  staggeredFade, 
+  slideDown, 
+  zoomIn, 
+  rotateAndScale, 
+  slideInLeft, 
+  flipX 
+} from '../utils/animations';
 export function ServiceCard({
   icon,
   title,
